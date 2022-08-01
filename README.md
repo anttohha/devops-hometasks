@@ -5,3 +5,5 @@ https://app.vagrantup.com/anttohha/boxes/centos/versions/01.beta/providers/virtu
 
 
 https://app.vagrantup.com/anttohha/boxes/centos
+
+
