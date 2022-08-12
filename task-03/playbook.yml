@@ -24,7 +24,11 @@
         dest: /etc/apache2/sites-available/
     - name: Download html page
       action: shell echo 'Listen 8081' >> /etc/apache2/ports.conf
-      
+    - name: restart apache
+      ansible.builtin.service:
+         name: apache2
+         state: restarted
+         enabled: true
       
       
       
