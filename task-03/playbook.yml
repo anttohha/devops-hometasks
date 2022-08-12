@@ -9,10 +9,12 @@
     - name: install php
       apt: name=php state=latest
     - name: Download html page
-      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacade$
+      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.html
     - name: Download php page
-      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacade$
+      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.php
     - name: copy html
       copy:
         src: index.html
         dest: /var/www/html
+     -name: wget php.conf
+      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/php.conf
