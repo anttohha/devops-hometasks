@@ -22,7 +22,7 @@
       copy:
         src: php.conf
         dest: /etc/apache2/sites-available/
-    - name: Download html page
+    - name: add 8081 port
       action: shell echo 'Listen 8081' >> /etc/apache2/ports.conf
     - name: restart apache
       ansible.builtin.service:
