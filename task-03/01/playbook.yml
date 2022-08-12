@@ -1,0 +1,39 @@
+---
+- name: Install apache2 and run html and php
+  become: yes
+  hosts: localhost
+
+  tasks:
+    - name: Install apache2
+      apt: name=apache2 state=latest
+    - name: install php
+      apt: name=php state=latest
+    - name: Download html page
+      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.html
+    - name: Download php page
+      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.php
+    - name: create directory /var/www/php
+      file:
+        path: /var/www/php
+        state: directory
+    - name: copy html
+      copy:
+        src: index.html
+        dest: /var/www/html
+    - name: copy php
+      copy:
+        src: index.php
+        dest: /var/www/php
+    - name: wget php.conf
+      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/php.conf
+    - name: copy php.conf
+      copy:
+        src: php.conf
+        dest: /etc/apache2/sites-available/
+    - name: add 8081 port
+      action: shell echo 'Listen 8081' >> /etc/apache2/ports.conf
+    - name: a2ensite
+      action: shell a2ensite php.conf
+    - name: restart apache2
+      service: name=apache2 state=restarted
+    
