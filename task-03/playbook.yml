@@ -1,3 +1,4 @@
+
 ---
 - name: Install apache2 and run
   become: yes
@@ -8,3 +9,9 @@
       apt: name=apache2 state=latest
     - name: install php
       apt: name=php state=latest
+    - name: Download html page 
+      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/02-tools/index.html
+    - name: Download php page 
+      action: shell sudo wget https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/02-tools/index.php
+
+
