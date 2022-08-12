@@ -1,5 +1,5 @@
 ---
-- name: Install apache2 and run
+- name: Install apache2 and run html and php
   become: yes
   hosts: localhost
 
