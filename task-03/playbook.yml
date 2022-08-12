@@ -32,8 +32,11 @@
         dest: /etc/apache2/sites-available/
     - name: add 8081 port
       action: shell echo 'Listen 8081' >> /etc/apache2/ports.conf
+    - name: a2ensite
+      action: shell a2ensite php.conf
     - name: restart apache2
       service: name=apache2 state=restarted
+    
       
       
       
