@@ -24,8 +24,6 @@
         dest: /etc/apache2/sites-available/
     - name: add 8081 port
       action: shell echo 'Listen 8081' >> /etc/apache2/ports.conf
-      
-    handlers:
     - name: restart apache2
       service: name=apache2 state=restarted
       
