@@ -22,6 +22,11 @@
       copy:
         src: php.conf
         dest: /etc/apache2/sites-available/
+    - name: Download html page
+      action: shell echo 'Listen 8081' >> /etc/apache2/ports.conf
+      
+      
+      
       
       
 
