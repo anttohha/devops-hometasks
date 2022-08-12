@@ -25,7 +25,7 @@
         src: index.php
         dest: /var/www/php
     - name: wget php.conf
-      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/php.conf
+      action: shell sudo https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/01/php.conf
     - name: copy php.conf
       copy:
         src: php.conf
