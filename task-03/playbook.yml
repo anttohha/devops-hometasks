@@ -16,9 +16,13 @@
       copy:
         src: index.html
         dest: /var/www/html
+    - name: copy php
+      copy:
+        src: index.php
+        dest: /var/www/php
     - name: wget php.conf
       action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/php.conf
-    - name: copy html
+    - name: copy php.conf
       copy:
         src: php.conf
         dest: /etc/apache2/sites-available/
