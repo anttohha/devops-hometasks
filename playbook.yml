@@ -1,0 +1,10 @@
+---
+- name: Install apache2 and run
+  become: yes
+  hosts: localhost
+
+  tasks:
+    - name: Install apache2
+      apt: name=apache2 state=latest
+    - name: install php
+       apt: name=php state=latest  
