@@ -45,4 +45,4 @@
      action: shell ansible-playbook playlist2.yaml
      
    - name: add route to container
-     action: shell sudo  bash 2.sh
+     action: shell  bash 2.sh
