@@ -1,0 +1,21 @@
+- name: download html
+  become: yes
+  hosts: localhost
+
+  tasks:
+    - name: download html and copy to html cont
+      community.general.lxc_container:
+        name: html
+        container_command: |
+         curl -L -o index.html https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.html
+         cp index.html /var/www/html
+         systemctl start httpd
+
+    - name: download php and copy to php cont
+      community.general.lxc_container:
+        name: php
+        container_command: |
+         curl -L -o index.php https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.php
+         cp index.php /var/www/html
+         sed -i 's/Listen 80/Listen 8081/g' /etc/httpd/conf/httpd.conf
+         systemctl start httpd
