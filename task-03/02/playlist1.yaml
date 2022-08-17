@@ -1,0 +1,40 @@
+---
+- name: Install httpd and run html and php 80 8081
+  become: yes
+  hosts: localhost
+
+  tasks:
+   - name: Install to host
+     apt:
+       name:
+         - lxc
+         - lxc-templates
+         - python3-lxc
+       state: latest
+
+   - name: add template to ansible
+     action: shell ansible-galaxy collection install community.general
+
+   - name: Create htmlka
+     community.general.lxc_container:
+       name: html
+       template: download
+       state: started
+       template_options: --dist centos --release 8-Stream --arch amd64
+       container_command: |
+         yum install httpd -y
+
+   - name: Create phpka
+     community.general.lxc_container:
+       name: php
+       template: download
+       state: started
+       template_options: --dist centos --release 8-Stream --arch amd64
+       container_command: |
+         yum install php httpd -y
+
+   - name: add route to container
+     action: shell bash 2.sh
+
+   - name: execute playbook
+     action: shell ansible-playbook playlit2.yaml
