@@ -31,18 +31,17 @@
        state: started
        template_options: --dist centos --release 8-Stream --arch amd64
        container_command: |
-         yum install php httpd -y
-
-   
+         yum install php httpd -y   
   
    - name: Download playlist2
      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/02/playlist2.yaml
-     
+
    - name: Download bash to bash
      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/02/2.sh
-        
+
    - name: execute playbook
      action: shell ansible-playbook playlist2.yaml
-     
+
    - name: add route to container
-     action: shell  bash 2.sh
+     action: shell bash 2.sh
+
