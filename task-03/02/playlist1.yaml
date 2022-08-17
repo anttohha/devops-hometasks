@@ -42,7 +42,7 @@
      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/02/2.sh
         
    - name: execute playbook
-     action: shell ansible-playbook playlit2.yaml
+     action: shell ansible-playbook playlist2.yaml
      
    - name: add route to container
      action: shell sudo  bash 2.sh
