@@ -18,7 +18,7 @@
     - name: restart httpd in http container
       service: name=httpd state=restarted
 
-  name: intall php_lcx
+- name: intall php_lcx
   hosts: php_lcx
   become: yes
   tasks:
