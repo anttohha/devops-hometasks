@@ -43,7 +43,7 @@
      action: shell sudo wget https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-03/02/inventory.yaml
 
    - name: execute playbook
-    action: shell ansible-playbook -i inventoty.yaml playlistlast.yaml
+     action: shell ansible-playbook -i inventoty.yaml playlistlast.yaml
 
    - name: add route to container
      action: shell bash 2.sh
