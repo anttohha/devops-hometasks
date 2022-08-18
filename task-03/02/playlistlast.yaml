@@ -1,0 +1,42 @@
+---
+- name: install html_lcx
+  hosts: html_lcx
+  become: yes
+  become_user: root
+  tasks:
+    - name: yum install httpd in container
+      yum:
+       name: httpd
+       state: latest
+
+    - name: download stranica
+      action: shell curl -L -o index.html https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.html
+
+    - name: copy html in
+      action: shell cp index.html /var/www/html/
+
+    - name: restart httpd in http container
+      service: name=httpd state=restarted
+
+  name: intall php_lcx
+  hosts: php_lcx
+  become: yes
+  tasks:
+    - name: yum install nano
+      yum:
+        name: httpd
+        state: latest
+    - name: yum install php
+      yum:
+        name: php
+        state: latest
+
+    - name: download stranica php
+      action: shell curl -L -o index.php https://raw.githubusercontent.com/Fenikks/itacademy-devops-files/master/03-lxc/index.php
+
+    - name: copy php in
+      action: shell cp index.php /var/www/html/
+    - name: change port httpd 81
+      action: shell sed -i 's/Listen 80/Listen 8081/g' /etc/httpd/conf/httpd.conf
+    - name: restart httpd in php container
+      service: name=httpd state=restarted
