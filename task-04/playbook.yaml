@@ -25,7 +25,7 @@
      - name: start puppet
        yum:
         name: puppet
-        state: start
+        state: started
 
 
 
@@ -55,12 +55,12 @@
      - name: start puppetserver
        yum:
          name: puppetserver
-         state: start
+         state: started
 
      - name: start puppet
        yum:
          name: puppet
-         state: start
+         state: started
 
 
      - name: accept all cert from slave1 and slave2
