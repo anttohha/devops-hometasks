@@ -1,4 +1,3 @@
-
 ---
 - name: install to slave1 and slave2
   become: yes
@@ -18,10 +17,10 @@
          state: latest
 
      - name: add to hosts master.puppet
-       action: echo "192.168.56.10 master.puppet" >> /etc/hosts
+       action: shell  echo "192.168.56.10 master.puppet" >> /etc/hosts
 
      - name: add to puppet.config
-       action: echo "server = master.puppet" >> /etc/puppetlabs/puppet/puppet.conf
+       action: shell echo "server = master.puppet" >> /etc/puppetlabs/puppet/puppet.conf
 
      - name: start puppet
        yum:
@@ -35,7 +34,7 @@
   become: yes
   hosts: localhost
 
-     tasks:
+  tasks:
      - name: add repositoriy to master puppetserver
        action: shell  sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
      - name: add repositoriy to master 2
@@ -55,13 +54,13 @@
 
      - name: start puppetserver
        yum:
-        name: puppetserver
-        state: start
+         name: puppetserver
+         state: start
 
      - name: start puppet
        yum:
-        name: puppet
-        state: start
+         name: puppet
+         state: start
 
 
      - name: accept all cert from slave1 and slave2
