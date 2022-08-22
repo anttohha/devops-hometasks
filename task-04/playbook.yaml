@@ -59,7 +59,7 @@
        action: shell sudo sed -i 's/-Xms2g -Xmx2g/-Xms256m -Xmx256m/g' /etc/sysconfig/puppetserver
        
      - name: adds to puppet.config
-       action: echo "[agent]" >> /etc/puppetlabs/puppet/puppet.conf  
+       action: shell echo "[agent]" >> /etc/puppetlabs/puppet/puppet.conf  
        
      - name: add to puppet.config
        action: shell echo "server = master.puppet" >> /etc/puppetlabs/puppet/puppet.conf
