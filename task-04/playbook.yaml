@@ -23,7 +23,7 @@
        action: shell echo "server = master.puppet" >> /etc/puppetlabs/puppet/puppet.conf
 
      - name: start puppet
-       yum:
+       service:
         name: puppet
         state: started
 
@@ -45,7 +45,7 @@
          state: latest
 
      - name: stop firewall
-       yum:
+       service: 
          name: firewall
          state: stop
 
@@ -53,12 +53,12 @@
        action: shell sudo /opt/puppetlabs/puppet/bin/gem install r10k
 
      - name: start puppetserver
-       yum:
+       service:
          name: puppetserver
          state: started
 
      - name: start puppet
-       yum:
+       service:
          name: puppet
          state: started
 
