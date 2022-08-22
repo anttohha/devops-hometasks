@@ -64,10 +64,10 @@
 
 
      - name: accept all cert from slave1 and slave2
-       action: sudo puppetserver ca sign  --all
+       action: shell sudo puppetserver ca sign  --all
 
      - name: download r10k.yaml
-       action: sudo curl -L -o /etc/r10k.yaml  https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/r10k.yaml
+       action: shell sudo curl -L -o /etc/r10k.yaml  https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/r10k.yaml
 
      - name: test1.from git
-       action: sudo /opt/puppetlabs/puppet/bin/r10k deploy environment -p
+       action: shell sudo /opt/puppetlabs/puppet/bin/r10k deploy environment -p
