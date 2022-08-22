@@ -44,9 +44,9 @@
          name: puppetserver
          state: latest
 
-     - name: stop firewall
+     - name: stop firewalld
        service: 
-         name: firewall
+         name: firewalld
          state: stopped
 
      - name: install r10k
