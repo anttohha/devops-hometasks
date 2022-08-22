@@ -47,7 +47,7 @@
      - name: stop firewall
        service: 
          name: firewall
-         state: stop
+         state: stopped
 
      - name: install r10k
        action: shell sudo /opt/puppetlabs/puppet/bin/gem install r10k
