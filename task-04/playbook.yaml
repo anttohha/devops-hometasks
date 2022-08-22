@@ -50,7 +50,7 @@
          state: stop
 
      - name: install r10k
-       action: sudo /opt/puppetlabs/puppet/bin/gem install r10k
+       action: shell sudo /opt/puppetlabs/puppet/bin/gem install r10k
 
      - name: start puppetserver
        yum:
