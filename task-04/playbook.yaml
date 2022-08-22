@@ -30,3 +30,7 @@
        yum:
          name: puppetserver
          state: latest
+     - name: install git
+       yum: 
+         name: git
+         state: latest
