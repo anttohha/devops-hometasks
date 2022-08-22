@@ -17,7 +17,7 @@
          state: latest
          
      - name: adds to puppet.config
-       action: echo "[agent]" >> /etc/puppetlabs/puppet/puppet.conf    
+       action:  shell echo "[agent]" >> /etc/puppetlabs/puppet/puppet.conf    
 
      - name: add to hosts master.puppet
        action: shell  echo "192.168.56.10 master.puppet" >> /etc/hosts
