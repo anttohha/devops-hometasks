@@ -51,6 +51,9 @@
 
      - name: install r10k
        action: shell sudo /opt/puppetlabs/puppet/bin/gem install r10k
+       
+     - name: resize memory
+       action: shell sudo sed -i 's/-Xms2g -Xmx2g/-Xms256m -Xmx256m/g' /etc/sysconfig/puppetserver
 
      - name: start puppetserver
        service:
