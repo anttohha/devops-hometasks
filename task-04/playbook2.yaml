@@ -1,0 +1,74 @@
+
+---
+- name: install to slave1 and slave2
+  become: yes
+  hosts: slave1 , slave2
+
+  tasks:
+     - name: Install nano
+       yum:
+         name: nano
+         state: latest
+     - name: add repositoriy to agent slave1
+       action: shell rpm -Uvh https://yum.puppet.com/puppet6-release-el-8.noarch.rpm
+
+     - name: install puppet_agent
+       yum:
+         name: puppet-agent
+         state: latest
+
+     - name: add to hosts master.puppet
+       action: echo "192.168.56.10 master.puppet" >> /etc/hosts
+
+     - name: add to puppet.config
+       action: echo "server = master.puppet" >> /etc/puppetlabs/puppet/puppet.conf
+
+     - name: start puppet
+       yum:
+        name: puppet
+        state: start
+
+
+
+
+- name: install to master
+  become: yes
+  hosts: localhost
+
+     tasks:
+     - name: add repositoriy to master puppetserver
+       action: shell  sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+     - name: add repositoriy to master 2
+       action: shell sudo dnf -y install https://yum.puppetlabs.com/puppet-release-el-8.noarch.rpm
+     - name: install puppetserver
+       yum:
+         name: puppetserver
+         state: latest
+
+     - name: stop firewall
+       yum:
+         name: firewall
+         state: stop
+
+     - name: install r10k
+       action: sudo /opt/puppetlabs/puppet/bin/gem install r10k
+
+     - name: start puppetserver
+       yum:
+        name: puppetserver
+        state: start
+
+     - name: start puppet
+       yum:
+        name: puppet
+        state: start
+
+
+     - name: accept all cert from slave1 and slave2
+       action: sudo puppetserver ca sign  --all
+
+     - name: download r10k.yaml
+       action: sudo curl -L -o /etc/r10k.yaml  https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/r10k.yaml
+
+     - name: test1.from git
+       action: sudo /opt/puppetlabs/puppet/bin/r10k deploy environment -p
