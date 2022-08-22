@@ -1,0 +1,6 @@
+:cachedir: '/var/cache/r10k'
+
+:sources:
+  :my-org:
+    remote: 'https://github.com/anttohha/for_puppet_task_04.git'
+    basedir: '/etc/puppetlabs/code/environments'
