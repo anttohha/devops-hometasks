@@ -73,10 +73,11 @@
        service:
          name: puppet
          state: started
+         
+     - name: add host to doverenie
+       action: shell sudo curl -L -o /etc/puppetlabs/puppet/autosign.conf 
 
-
-     - name: accept all cert from slave1 and slave2
-       action: shell sudo puppetserver ca sign --all
+     
 
      - name: download r10k.yaml
        action: shell sudo curl -L -o /etc/r10k.yaml  https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/r10k.yaml
