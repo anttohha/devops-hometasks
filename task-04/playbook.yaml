@@ -51,6 +51,12 @@
        service: 
          name: firewalld
          state: stopped
+         
+     - name: add to hosts slave1
+       action: shell  echo "192.168.56.11 slave1.puppet" >> /etc/hosts
+       
+     - name: add to hosts slave2
+       action: shell  echo "192.168.56.12 slave2.puppet" >> /etc/hosts
 
      - name: install r10k
        action: shell sudo /opt/puppetlabs/puppet/bin/gem install r10k
