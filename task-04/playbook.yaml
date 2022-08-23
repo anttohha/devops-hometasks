@@ -75,7 +75,7 @@
          state: started
          
      - name: add host to doverenie
-       action: shell sudo curl -L -o /etc/puppetlabs/puppet/autosign.conf 
+       action: shell sudo curl -L -o /etc/puppetlabs/puppet/autosign.conf https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/autosign.conf
 
      
 
