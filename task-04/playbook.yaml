@@ -1,7 +1,7 @@
 ---
 - name: install to slave1 and slave2
   become: yes
-  hosts: slave1 , slave2
+  hosts: slave1 , slave2 , mineserver
 
   tasks:
      - name: Install nano
@@ -63,6 +63,9 @@
 
      - name: add to hosts slave2
        shell:  echo "192.168.56.12 slave2.puppet" >> /etc/hosts
+       
+     - name: add to hosts mineserver
+       shell:  echo "192.168.56.13 mineserver.puppet" >> /etc/hosts
 
      - name: install r10k
        shell: sudo /opt/puppetlabs/puppet/bin/gem install r10k
