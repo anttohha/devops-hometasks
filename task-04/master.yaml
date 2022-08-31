@@ -1,0 +1,77 @@
+---
+ - name: for master
+   become: yes
+   hosts: all
+
+   tasks:
+      - name: playbook for All
+        copy:
+           src: /vagrant/disableselinux.yaml
+           dest: /home/vagrant/disableselinux.yaml
+
+
+
+      - name: install sshpass
+        become: yes
+        yum:
+          name: sshpass
+          state: present
+
+      - name: disable key check
+        become: yes
+        ini_file:
+          path: /etc/ansible/ansible.cfg
+          section: defaults
+          option: host_key_checking
+          value: False
+
+      - name: playbook for All
+        copy:
+           src: /vagrant/playbook.yaml
+           dest: /home/vagrant/playbook.yaml
+
+      - name: inventory to All
+        copy:
+           src: /vagrant/inventory.yaml
+           dest: /home/vagrant/inventory.yaml
+
+      - name: stop firewalld
+        service:
+          name: firewalld
+          state: stopped
+          enabled: False
+
+
+      - name: install nginx
+        become: yes
+        yum:
+          name: nginx
+          state: latest
+
+
+
+
+      - name: copy web1.conf
+        shell: sudo curl -L -o /etc/nginx/conf.d/web1.conf https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/web1.conf
+
+      - name: copy web2.conf
+        shell: sudo curl -L -o /etc/nginx/conf.d/web2.conf https://raw.githubusercontent.com/anttohha/devops-hometasks/master/task-04/web2.conf
+
+
+
+      - name: use playbook
+        become: yes
+        shell: ansible-playbook playbook.yaml -i inventory.yaml
+
+      - name: Disabling SELinux permissive
+        action: shell sed -i 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config
+
+      - name: Disabling SELinux enforcing
+        action: shell sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+      - name: systemctl enabled nginx
+        action: shell systemctl enable nginx
+
+
+      - name: restart
+        action: shell shutdown -r now
