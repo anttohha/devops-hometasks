@@ -1,0 +1,19 @@
+- name: Create a jenkins job
+  community.general.jenkins_job:
+    config: "{{ lookup('file', 'templates/config.xml') }}"
+    name: "test-check"
+    password: admin
+    url: http://localhost:8080
+    user: admin
+
+
+- name: Create a jenkins build
+  community.general.jenkins_build:
+    name: "test-check"
+    args:
+      cloud: "test"
+      availability_zone: "test_az"
+    state: present
+    user: admin
+    password: admin
+    url: http://localhost:8080

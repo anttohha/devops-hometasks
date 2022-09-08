@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: yes
+
+  tasks:
+
+    - name: Install Plugin "active-directory"
+      jenkins_plugin:
+        name: "{{ item.key }}"
+      with_items:
+        - { key: "active-directory", version: "2.16" }
+        - { key: "Go", version: "1.4" }
+        - { key: "workflow-aggregator", version: "590.v6a_d052e5a_a_b_5" }
+        - { key: "GitHub", version: "1.35.0" }
+
+    - name: Restart Jenkins if required
+      service:
+        name: jenkins
+        state: restarted
