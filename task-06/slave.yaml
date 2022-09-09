@@ -1,0 +1,12 @@
+---
+- name:
+  hosts: all
+
+  tasks:
+    - name: to slave
+      shell:  sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+
+    - name: to slave 2
+      service:
+        name: sshd
+        state: restarted
