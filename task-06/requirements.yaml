@@ -1,0 +1,10 @@
+collections:
+  - name: community.general
+
+roles:
+  - name : geerlingguy.repo-epel # required for pip
+  - name : geerlingguy.java
+  - name : geerlingguy.jenkins
+  - name : savoirfairelinux.nexus3-oss
+  - name : ansible-thoteam.nexus3-oss
+  - name : geerlingguy.apache  

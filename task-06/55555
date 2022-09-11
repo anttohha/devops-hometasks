@@ -1,0 +1,60 @@
+tasks:
+  - name: Add key
+    apt_key:
+      url: https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+
+  - name: Add repository
+    apt_repository:
+      repo: deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ buster main
+      state: present
+      update_cache: true
+
+  - name: Install Java
+    apt:
+      name: adoptopenjdk-8-hotspot
+      state: present
+
+  - name: Download Nexus
+    get_url:
+      url: https://download.sonatype.com/nexus/3/nexus-3.41.1-01-unix.tar.gz
+      dest: /opt/nexus3.tar.gz
+
+  - name: Create workdir
+    file:
+      path: /opt/nexus
+      state: directory
+
+  - name: Unpack Nexus
+    unarchive:
+      src: /opt/nexus3.tar.gz
+      dest: /opt/nexus/
+
+  - name: Find last release
+    find:
+      file_type: directory
+      patterns: 'nexus*'
+      path: /opt/nexus
+       register: nexus_path
+
+  - name: Create nexus symlink
+    file:
+      path: /opt/nexus/nexus
+      state: link
+      src: "{{ nexus_path.files[0]['path'] }}"
+    when: nexus_path.matched > 0
+
+  - name: Copy environment file
+    copy:
+      src: nexus-server
+      dest: /etc/default/nexus-server
+
+  - name: Copy systemd file
+    copy:
+      src: nexus.service
+      dest: /etc/systemd/system/nexus.service
+
+  - name: Start Nexus service
+    systemd:
+      name: nexus
+      enabled: yes
+      state: started
