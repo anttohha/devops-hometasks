@@ -1,4 +1,0 @@
-- hosts: jenkins.vm
-  become: yes
-  roles:
-    - jenkins
