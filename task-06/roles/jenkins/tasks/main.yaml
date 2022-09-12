@@ -62,7 +62,7 @@
         src: xml_jenkins/credentials.xml
         dest: /var/lib/jenkins/credentials.xml
 
-   - name: copy credential
+   - name: copy SSHBuildWrapper
      copy:
         src: xml_jenkins/org.jvnet.hudson.plugins.SSHBuildWrapper.xml
         dest: /var/lib/jenkins/org.jvnet.hudson.plugins.SSHBuildWrapper.xml
