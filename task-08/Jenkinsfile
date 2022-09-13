@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    tools{
+        go 'go'
+    }
+    stages {
+        stage('Git') {
+            steps {
+                git 'https://github.com/anttohha/word-cloud-generator.git'
+            }
+        }
+        stage('build ssh'){
+            steps{
+                sh '''export GOPATH=$WORKSPACE/go
+                export PATH="$PATH:$(go env GOPATH)/bin"
+                go get github.com/tools/godep
+                go get github.com/smartystreets/goconvey
+                go get github.com/GeertJohan/go.rice/rice
+                go get github.com/wickett/word-cloud-generator/wordyapi
+                go get github.com/gorilla/mux
+                
+                sed -i "s/1.DEVELOPMENT/1.$BUILD_NUMBER/g" static/version
+                
+                GOOS=linux GOARCH=amd64 go build -o ./artifacts/word-cloud-generator -v
+                
+                md5sum artifacts/word-cloud-generator
+                gzip -f artifacts/word-cloud-generator'''
+            }
+        }
+        
+        stage('make test code'){
+            steps{
+                sh '''
+                 make lint
+                 make test '''
+            }
+        }
+        
+        stage('upload to nexus'){
+            steps{
+                nexusArtifactUploader artifacts: [[artifactId: 'world-cloud-generator', classifier: '', file: 'artifacts/word-cloud-generator.gz', type: 'gz']], credentialsId: '1', groupId: '1', nexusUrl: '192.168.56.11:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'world-cloud-build', version: '1.$BUILD_NUMBER'
+            }
+        }
+        
+        stage ('copy and run on prodact.vm'){
+            steps{
+                sh ''' 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo service wordcloud stop
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo curl -u downloader:downloader  -X GET "http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.1/world-cloud-generator-1.1.gz" -o /opt/wordcloud/word-cloud-generator.gz 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo ls -l /opt/wordcloud 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo chmod +x /opt/wordcloud/word-cloud-generator
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo service wordcloud start
+                '''
+            }
+        }
+    }
+}
