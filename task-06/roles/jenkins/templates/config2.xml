@@ -73,7 +73,7 @@ ls -l artifacts/</command>
       <siteName>vagrant@192.168.56.12:22</siteName>
       <command>sudo service wordcloud stop
 
-sudo curl -u downloader:downloader  -X GET &quot;http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.1/world-cloud-generator-1.1.gz&quot; -o /opt/wordcloud/word-cloud-generator.gz 
+sudo curl -u downloader:downloader  -X GET &quot;http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.2/world-cloud-generator-1.2.gz&quot; -o /opt/wordcloud/word-cloud-generator.gz 
 sudo ls -l /opt/wordcloud 
 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
 sudo chmod +x /opt/wordcloud/word-cloud-generator
@@ -87,7 +87,7 @@ sudo service wordcloud start
       <siteName>vagrant@192.168.56.13:22</siteName>
       <command>sudo service wordcloud stop
 
-sudo curl -u downloader:downloader  -X GET &quot;http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.1/world-cloud-generator-1.1.gz&quot; -o /opt/wordcloud/word-cloud-generator.gz 
+sudo curl -u downloader:downloader  -X GET &quot;http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.2/world-cloud-generator-1.2.gz&quot; -o /opt/wordcloud/word-cloud-generator.gz 
 sudo ls -l /opt/wordcloud 
 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
 sudo chmod +x /opt/wordcloud/word-cloud-generator
