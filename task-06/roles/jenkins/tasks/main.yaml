@@ -24,7 +24,17 @@
      pip:
         name: lxml
 
-
+   - name: Install jq packages
+     become: yes
+     apt:
+      name: jq
+      state: present
+      
+   - name: Install sshpass packages
+     become: yes
+     apt:
+      name: sshpass
+      state: present  
 
 
 
