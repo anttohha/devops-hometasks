@@ -40,19 +40,19 @@ pipeline {
         
         stage('upload to nexus'){
             steps{
-                nexusArtifactUploader artifacts: [[artifactId: 'world-cloud-generator', classifier: '', file: 'artifacts/word-cloud-generator.gz', type: 'gz']], credentialsId: '1', groupId: '1', nexusUrl: '192.168.56.11:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'world-cloud-build', version: '1.$BUILD_NUMBER'
+                nexusArtifactUploader artifacts: [[artifactId: 'world-cloud-generator', classifier: '', file: 'artifacts/word-cloud-generator.gz', type: 'gz']], credentialsId: 'nexus-creds', groupId: '1', nexusUrl: '192.168.33.90:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'world-cloud-build', version: '1.$BUILD_NUMBER'
             }
         }
         
         stage("deploy on staging.vm") {
 			steps {
 				sh ''' 
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.12 sudo service wordcloud stop
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.12 sudo curl -u downloader:downloader  -X GET "http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.2/world-cloud-generator-1.2.gz" -o /opt/wordcloud/word-cloud-generator.gz 
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.12 sudo ls -l /opt/wordcloud 
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.12 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.12 sudo chmod +x /opt/wordcloud/word-cloud-generator
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.12 sudo service wordcloud start
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.80 sudo service wordcloud stop
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.80 sudo curl -u downloader:downloader  -X GET "http://192.168.33.90:8081/repository/world-cloud-build/1/world-cloud-generator/1.2/world-cloud-generator-1.2.gz" -o /opt/wordcloud/word-cloud-generator.gz 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.80 sudo ls -l /opt/wordcloud 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.80 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.80 sudo chmod +x /opt/wordcloud/word-cloud-generator
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.80 sudo service wordcloud start
                 '''
 			}
 		}
@@ -62,11 +62,11 @@ pipeline {
 				stage("test1") {
 					steps {
 					   sh '''
-                        res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.56.12:8888/version | jq '. | length'`
+                        res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.33.80:8888/version | jq '. | length'`
                         if [ "1" != "$res" ]; then
                         exit 99
                         fi
-                        res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.56.12:8888/api | jq '. | length'`
+                        res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.30.80:8888/api | jq '. | length'`
                         if [ "7" != "$res" ]; then
                         exit 99
                         fi    
@@ -76,11 +76,11 @@ pipeline {
 				stage("test2T") {
 					steps {
 						   sh '''
-                           res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.56.12:8888/version | jq '. | length'`
+                           res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.30.80:8888/version | jq '. | length'`
                            if [ "1" != "$res" ]; then
                            exit 99
                            fi
-                           res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.56.12:8888/api | jq '. | length'`
+                           res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://192.168.30.80:8888/api | jq '. | length'`
                            if [ "7" != "$res" ]; then
                            exit 99
                            fi    
@@ -94,12 +94,12 @@ pipeline {
 		stage("Deploy to production.vm") {
 			steps {
 				sh ''' 
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo service wordcloud stop
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo curl -u downloader:downloader  -X GET "http://192.168.56.11:8081/repository/world-cloud-build/1/world-cloud-generator/1.2/world-cloud-generator-1.2.gz" -o /opt/wordcloud/word-cloud-generator.gz 
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo ls -l /opt/wordcloud 
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo chmod +x /opt/wordcloud/word-cloud-generator
-                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.56.13 sudo service wordcloud start
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.85 sudo service wordcloud stop
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.85 sudo curl -u downloader:downloader  -X GET "http://192.168.30.90:8081/repository/world-cloud-build/1/world-cloud-generator/1.2/world-cloud-generator-1.2.gz" -o /opt/wordcloud/word-cloud-generator.gz 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.85 sudo ls -l /opt/wordcloud 
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.85 sudo gunzip -f /opt/wordcloud/word-cloud-generator.gz
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.85 sudo chmod +x /opt/wordcloud/word-cloud-generator
+                sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@192.168.33.85 sudo service wordcloud start
                 '''
 			}
 		}
