@@ -1,0 +1,10 @@
+FROM golang:1.16 as docker1
+RUN mkdir /word-cloud-generator; \
+    cd /word-cloud-generator; \
+    git clone https://github.com/Fenikks/word-cloud-generator.git .; \
+    make
+
+FROM alpine:latest as docker2
+RUN  apk add --update --no-cache go vim git make musl-dev curl
+COPY --from=docker1 /word-cloud-generator/artifacts/linux/word-cloud-generator .
+CMD /word-cloud-generator
