@@ -5,6 +5,6 @@ RUN mkdir /word-cloud-generator; \
     make
 
 FROM alpine:latest as docker2
-RUN  apk add --update --no-cache go vim gcompat
+RUN  apk add --update --no-cache  gcompat
 COPY --from=docker1 /word-cloud-generator/artifacts/linux/word-cloud-generator . 
 CMD  /word-cloud-generator
