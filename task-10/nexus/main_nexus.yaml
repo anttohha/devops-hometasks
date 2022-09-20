@@ -1,0 +1,51 @@
+---
+- name: Install Nexus
+  hosts: localhost
+
+
+  tasks:
+
+   - name: Install pkg
+     apt:
+       pkg:
+        - gpg
+        - gnupg
+        - curl
+        - build-essential
+        - rsync
+       state: present
+
+   - name: Add new repo
+     apt_repository:
+       repo: deb http://security.debian.org/debian-security stretch/updates main
+       update_cache: true
+
+
+   - name: Add key
+     apt_key:
+       url: https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+
+   - name: Add repository
+     apt_repository:
+       repo: deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ buster main
+       state: present
+       update_cache: true
+
+   - name: Install Java
+     apt:
+       name: adoptopenjdk-8-hotspot
+       state: present
+
+
+   - name: download ansible-thoteam.nexus3-oss
+     ansible.builtin.shell: ansible-galaxy install ansible-thoteam.nexus3-oss
+
+
+
+
+
+
+
+
+   - name: start playbook2
+     action: shell ansible-playbook for_nexus.yaml
