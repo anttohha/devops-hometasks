@@ -129,7 +129,7 @@
           - GitHub Branch Source
           - SSH Build Agents
           - nexus-artifact-uploader
-
+          - build-trigger
      register: plugin_result
      until: plugin_result is success
      retries: 5
