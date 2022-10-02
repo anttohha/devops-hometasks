@@ -1,0 +1,13 @@
+[Unit]
+Description=nexus service
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/default/nexus-server
+Type=forking
+LimitNOFILE=65536
+ExecStart=/opt/nexus/nexus/bin/nexus start
+ExecStop=/opt/nexus/nexus/bin/nexus stop
+
+[Install]
+WantedBy=multi-user.target
