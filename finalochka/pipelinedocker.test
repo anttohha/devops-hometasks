@@ -9,7 +9,7 @@ pipeline {
                     args '--network host'
                }
                
-stage('Git') {
+        stage('Git') {
             steps {
                 git 'https://github.com/anttohha/word-cloud-generator.git'
             }
@@ -38,5 +38,4 @@ stage('Git') {
             
         }
     }
-}
 }
