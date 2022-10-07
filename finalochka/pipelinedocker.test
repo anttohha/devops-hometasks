@@ -28,6 +28,8 @@ pipeline {
                 gzip -f ./artifacts/word-cloud-generator
                 cat static/version
                 '''
+                
+                nexusArtifactUploader credentialsId: '1', groupId: '1', nexusUrl: '172.20.0.4:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'world-cloud-build', version: '1'
             }
         }
     }
