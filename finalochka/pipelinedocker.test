@@ -10,10 +10,8 @@ pipeline {
                }
             }
             steps {
-                git url: 'https://github.com/anttohha/word-cloud-generator.git'
-                
+                git url: 'https://github.com/anttohha/word-cloud-generator.git'                
                 sh '''
-                make lint && make test                 
                 export GOPATH=$WORKSPACE/go
                 export PATH="$PATH:$(go env GOPATH)/bin"               
                 go get github.com/tools/godep
@@ -27,7 +25,6 @@ pipeline {
                 pwd
                 ls -l artifacts/
                 gzip -f ./artifacts/word-cloud-generator
-                cat static/version
                 '''
                
             }
