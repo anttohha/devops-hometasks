@@ -10,7 +10,7 @@ pipeline {
                }
             }
             steps {
-                git url: 'https://github.com/Fenikks/word-cloud-generator.git'
+                git url: 'https://github.com/anttohha/word-cloud-generator.git'
                 sh '''
                 make lint && make test
                 export GOPATH=$WORKSPACE/go
