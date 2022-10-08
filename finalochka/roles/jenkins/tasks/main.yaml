@@ -1,0 +1,160 @@
+---
+   - name: Install packeges all other
+     apt:
+        pkg:
+        - daemon
+        - git
+        - build-essential
+        - python-pip-whl
+        - python3-pip
+        - openjdk-11-jdk
+        - gnupg2
+        state: present
+        update_cache: yes
+
+   - name: Install Python
+     pip:
+        name:
+          - python-jenkins
+          - lxml
+
+   - name: Install key for repo
+     apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+
+   - name: Add repo to repofile
+     apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        state: present
+        update_cache: yes
+
+   - name: Install Jenkins
+     apt:
+        pkg:
+        - jenkins
+        state: present
+
+
+
+
+   - name: Disable start wizard
+     lineinfile:
+         path: "{{ item.path }}"
+         state: present
+         regexp: "{{ item.exp }}"
+         line: "{{ item.n_ln }}"
+     with_items:
+        - { path: "/etc/default/jenkins", exp: '^JAVA_ARGS="-Djava.awt.headless=true"', n_ln: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dhudson.security.csrf.DefaultCrumbIssuer.EXCLUDE_SESSION_ID=true"' }
+
+
+
+
+
+   - name: Creat user folder
+     file:
+        path: /var/lib/jenkins/users/
+        state: directory
+        owner: jenkins
+        group: jenkins
+
+
+
+
+
+
+   - name: Make dirs
+     file:
+        path: "{{ item }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+     with_items:
+        - /var/lib/jenkins/users/admin_8133878285141068281
+
+   - name: Copy config files
+     copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dst }}"
+        owner: jenkins
+        group: jenkins
+        force: yes
+     with_items:
+        - { src: "xml_jenkins/users/users.xml", dst: "/var/lib/jenkins/users/" }
+        - { src: "xml_jenkins/users/admin_10907163220930187973/config.xml", dst: "/var/lib/jenkins/users/admin_10907163220930187973/" }
+        - { src: "xml_jenkins/config.xml", dst: "/var/lib/jenkins/" }
+        - { src: "xml_jenkins/locale.xml", dst: "/var/lib/jenkins/" }
+        - { src: "xml_jenkins/credentials.xml", dst: "/var/lib/jenkins/" }
+        - { src: "xml_jenkins/org.jenkinsci.plugins.golang.GolangBuildWrapper.xml", dst: "/var/lib/jenkins/" }
+
+   - name: Mkdir for jobs
+     file:
+        path: "{{ item }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+     with_items:
+        - /var/lib/jenkins/jobs/asd
+        
+
+
+
+
+   - name: Copy job file
+     copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dst }}"
+        owner: jenkins
+        group: jenkins
+        force: yes
+     with_items:
+        - { src: "xml_jenkins/job/config.xml", dst: "/var/lib/jenkins/jobs/asd/config.xml" }
+
+   - name: start Jenkins
+     become: yes
+     sysvinit:
+       name: jenkins
+       state: started
+       enabled: yes
+
+   - name: pause for start jenkins app
+     shell: 'sleep 30'
+
+   - name: Install plugin
+     community.general.jenkins_plugin:
+        name: "{{ item }}"
+        url_username: admin
+        url_password: admin
+        url: http://localhost:8080
+        with_dependencies: yes
+     with_items:
+           - locale
+           - github
+           - golang
+           - nexus-artifact-uploader
+           - timestamper
+           - pipeline
+           - pipeline-stage-view
+           - pipeline-github-lib
+           - pipeline-build-step
+           - workflow-basic-steps
+           - build-pipeline-plugin
+           - workflow-aggregator
+           - github-branch-source
+           - workflow-cps
+           - ssh
+           - ssh-build-agents
+           - workflow-aggregator
+           - workflow-durable-task-step
+           - pipeline-utility-steps
+           - ssh-steps
+           - pipeline-stage-step
+           - docker-workflow
+           - docker-plugin
+     register: plugin_result
+     until: plugin_result is success
+     retries: 5
+     delay: 10
+
+
+   #- include_tasks: create_job.yaml
