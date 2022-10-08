@@ -1,3 +1,0 @@
-roles:
-  - name : savoirfairelinux.nexus3-oss
-  - name : ansible-thoteam.nexus3-oss
