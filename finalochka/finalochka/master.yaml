@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: Download Long Term Jenkins release
+    apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/ '
+    state: present
+
+  - name: update apt cache
+     apt:
+        update_cache: yes
+        state: latest
+
+  - name: Install java
+    apt:
+      name: java-11-openjdk-devel
+      state: present
+
+  - name: Install jenkins
+    apt:
+      name: jenkins
+      state: latest
+
+
+  - name: Start jenkins
+    service:
+      name: jenkins
+      enabled: true
+      state: started
