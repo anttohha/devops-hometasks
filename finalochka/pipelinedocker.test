@@ -1,8 +1,7 @@
 pipeline {
     agent any
-    
     stages {
-        stage ('Built') {
+        stage ('Build') {
             agent {
                 dockerfile { 
                     filename 'finalochka/Dockerfile1.go' 
@@ -29,6 +28,7 @@ pipeline {
                 gzip -f ./artifacts/word-cloud-generator
                 cat static/version
                 '''
-                }
-                }
-                }
+            }
+        }
+    }
+}
