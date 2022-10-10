@@ -45,21 +45,26 @@ pipeline {
             
             steps{
                 sh '''
-                   curl -u downloader:downloader -X GET "http://172.20.0.4:8081/repository/world-cloud-build/1/world-cloud-generator/1/world-cloud-generator-1.gz" -o /opt/wordcloud/word-cloud-generator.gz
+                   curl -u downloader:downloader -X GET "http://172.20.0.4:8081/repository/word-cloud-build/$GIT_BRANCH/word-cloud-generator/1.$BUILD_NUMBER/word-cloud-generator-1.$BUILD_NUMBER.gz" -o /opt/wordcloud/word-cloud-generator.gz
                    gunzip -f /opt/wordcloud/word-cloud-generator.gz
                    chmod +x /opt/wordcloud/word-cloud-generator
-                   /opt/wordcloud/word-cloud-generator &
-                   res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://172.20.0.4:8888/version | jq '. | length'`
-                   if [ "1" != "$res" ]; then
-                   exit 99
-                   fi
-                   res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://172.20.0.4:8888/api | jq '. | length'`
-                   if [ "7" != "$res" ]; then
-                   exit 99
-                   fi 
+                   /opt/wordcloud/word-cloud-generator
                    '''
                 
             }
+            
+            steps {
+					   sh '''
+                        res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://172.20.0.04:8888/version | jq '. | length'`
+                        if [ "1" != "$res" ]; then
+                        exit 99
+                        fi
+                        res=`curl -s -H "Content-Type: application/json" -d '{"text":"ths is a really really really important thing this is"}' http://172.20.0.4:8888/api | jq '. | length'`
+                        if [ "7" != "$res" ]; then
+                        exit 99
+                        fi    
+                        '''
+					}
             
         }
     }
