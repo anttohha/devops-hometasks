@@ -151,6 +151,7 @@
            - pipeline-stage-step
            - docker-workflow
            - docker-plugin
+           - startup-trigger-plugin
      register: plugin_result
      until: plugin_result is success
      retries: 5
