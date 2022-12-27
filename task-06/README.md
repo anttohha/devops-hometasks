@@ -1,2 +1,10 @@
-login admin
-password admin
+Домашнее задание 6
+В репозитории devops-hometasks создайте директорию 06-jenkins
+C помощью Vagrant создайте виртуальную машину jenkins.vm основанную на Debian
+Напишите свою роль для установки Jenkins. Роль должна содержать:
+Конфигурацию системы
+Установку необходимых плагинов
+Создание задачи
+Создание необходимых credentials
+Для примера можно использовать роли ansible-jenkins, ansible-role-jenkins
+На машине jenkins.vm установите Jenkins с помощью вашей ansible роли.
